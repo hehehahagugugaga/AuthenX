@@ -1,0 +1,362 @@
+/* ============================================
+   DocuVerify — History Page Styles
+   ============================================ */
+
+.history-stats {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.history-stat {
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.history-stat strong {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.score-bar-track {
+  width: 60px;
+  height: 4px;
+  background: var(--color-gray-100);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+.score-value {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  font-family: var(--font-mono);
+  min-width: 36px;
+}
+
+/* ============================================
+   DocuVerify — Documents Page Styles
+   ============================================ */
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+.doc-card {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.doc-card:hover {
+  box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(37, 99, 235, 0.12);
+  transform: translateY(-2px);
+  border-color: rgba(191, 219, 254, 0.85);
+}
+
+.doc-card-thumb {
+  height: 140px;
+  background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.doc-card-thumb svg {
+  width: 40px;
+  height: 40px;
+  color: var(--color-gray-400);
+}
+
+.doc-card-thumb .doc-type-badge {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+}
+
+.doc-card-body {
+  padding: var(--space-4);
+}
+
+.doc-card-name {
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  letter-spacing: -0.01em;
+}
+
+.doc-card-id {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  margin-bottom: var(--space-3);
+}
+
+.doc-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.doc-card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doc-card-footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ============================================
+   DocuVerify — Blockchain Ledger Page Styles
+   ============================================ */
+
+.ledger-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.ledger-stat-card {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.ledger-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ledger-stat-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ledger-stat-value {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #071529 0%, #1d4ed8 75%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.ledger-stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.chain-visualization {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  overflow-x: auto;
+}
+
+.chain-viz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.hash-cell {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   DocuVerify — Alerts Page Styles
+   ============================================ */
+
+.alerts-summary {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.alert-summary-card {
+  flex: 1;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: 1px solid;
+}
+
+.alert-summary-card.critical {
+  background: var(--color-danger-50);
+  border-color: var(--color-danger-100);
+}
+
+.alert-summary-card.warning {
+  background: var(--color-warning-50);
+  border-color: var(--color-warning-100);
+}
+
+.alert-summary-card.info {
+  background: var(--color-accent-50);
+  border-color: var(--color-accent-100);
+}
+
+.alert-summary-count {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+}
+
+.alert-summary-card.critical .alert-summary-count { color: var(--color-danger-600); }
+.alert-summary-card.warning .alert-summary-count { color: var(--color-warning-600); }
+.alert-summary-card.info .alert-summary-count { color: var(--color-accent-600); }
+
+.alert-summary-label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.alert-item {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+  transition: box-shadow var(--transition-fast);
+}
+
+.alert-item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-severity {
+  width: 4px;
+  height: 100%;
+  min-height: 40px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.alert-severity.critical { background: var(--color-danger-500); }
+.alert-severity.warning { background: var(--color-warning-500); }
+.alert-severity.info { background: var(--color-accent-500); }
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.alert-description {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.alert-meta {
+  display: flex;
+  gap: var(--space-4);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.alert-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   DocuVerify — Analytics Page Styles
+   ============================================ */
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.analytics-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.analytics-card .chart-container {
+  height: 260px;
+}
+
+.analytics-summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.analytics-summary-item {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  text-align: center;
+}
+
+.analytics-summary-value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.analytics-summary-label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
