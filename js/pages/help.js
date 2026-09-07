@@ -54,106 +54,51 @@ export function renderHelpPage(container) {
         </div>
       </div>
 
-      <!-- Centered FAQ Card with Horizontal Scrollers -->
-      <div class="card" style="margin-bottom: var(--space-6); width: 100%; overflow: hidden;">
+      <!-- Centered FAQ Card -->
+      <div class="card" style="margin-bottom: var(--space-6); width: 100%;">
         <div class="card-header">
           <h3>Frequently Asked Questions</h3>
-          <p class="text-xs text-secondary" style="margin: 0; text-align: center;">Interactive knowledge base and operational answers for verification officers</p>
+          <p class="text-xs text-secondary" style="margin: 0; text-align: center;">Quick answers to common questions regarding document authenticity and pipeline checks</p>
         </div>
-        <div class="card-body" style="padding: var(--space-6) 0;">
-          <div class="faq-scroller-section" id="faq-scroller-wrapper">
-            <!-- Row 1: Moving Left -->
-            <div class="scroller-mask">
-              <div class="animate-scroll-horizontal" style="--scroll-duration: 55s;">
-                <div class="scroller-track-inner">
-                  <div class="faq-card">
-                    <h4 class="faq-title">How does the document verification process work?</h4>
-                    <p class="faq-answer">AuthenX utilizes a hybrid multi-layer pipeline: optical character recognition (OCR), metadata authenticity inspection, AI forgery detection, visual artifact cross-validation, and cryptographic matching against blockchain ledger records.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What document types are supported?</h4>
-                    <p class="faq-answer">The system accepts PDF, JPG, PNG, DOC, and DOCX formats. It automatically classifies academic degrees, government certificates, identity credentials, revenue records, and notary documents.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What does a "Suspicious" status indicate?</h4>
-                    <p class="faq-answer">A suspicious verdict signifies that the document triggered one or more security threshold alerts (e.g. font substitution, edited metadata, or signature discrepancy). These documents are automatically flagged for manual inspector review.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">Can AuthenX operate in offline field conditions?</h4>
-                    <p class="faq-answer">Yes. Mobile and border officers can perform offline optical inspections, MRZ parsing, and local cryptographic verification even when network connectivity is severed.</p>
-                  </div>
+        <div class="card-body" style="padding: 0;">
+          <div id="faq-list">
+            ${[
+      {
+        q: 'How does the document verification process work?',
+        a: 'AuthenX utilizes a hybrid multi-layer pipeline: optical character recognition (OCR), metadata authenticity inspection, AI forgery detection, visual artifact cross-validation, and cryptographic matching against blockchain ledger records.'
+      },
+      {
+        q: 'What document types are supported?',
+        a: 'The system accepts PDF, JPG, PNG, DOC, and DOCX formats. It automatically classifies academic degrees, government certificates, identity credentials, revenue records, and notary documents.'
+      },
+      {
+        q: 'How is blockchain integrity guaranteed?',
+        a: 'Each verified document computes a SHA-256 cryptographic digest that is permanently inscribed on the Institutional Verification Blockchain. Any subsequent alteration creates an immediate hash divergence.'
+      },
+      {
+        q: 'What does a "Suspicious" status indicate?',
+        a: 'A suspicious verdict signifies that the document triggered one or more security threshold alerts (e.g. font substitution, edited metadata, or signature discrepancy). These documents are automatically flagged for manual inspector review.'
+      },
+      {
+        q: 'How do I flag a document for senior officer review?',
+        a: 'When viewing any verification report, click "Flag for Manual Review" in the top action bar. You can add officer notes and route the dossier to senior administrative personnel.'
+      },
+      {
+        q: 'Is citizen and organizational data secure?',
+        a: 'All documents are transmitted using TLS 1.3 encryption and stored with AES-256 cryptographic keys. Role-based access control (RBAC), multi-factor authentication, and tamper-evident audit trails ensure full compliance.'
+      }
+    ].map((faq, i) => `
+              <div class="help-faq-item" data-faq="${i}">
+                <div class="help-faq-item-title">
+                  <span class="faq-question">${faq.q}</span>
+                  <i data-lucide="chevron-down" class="faq-chevron"></i>
                 </div>
-                <!-- Duplicate for seamless loop -->
-                <div class="scroller-track-inner" aria-hidden="true">
-                  <div class="faq-card">
-                    <h4 class="faq-title">How does the document verification process work?</h4>
-                    <p class="faq-answer">AuthenX utilizes a hybrid multi-layer pipeline: optical character recognition (OCR), metadata authenticity inspection, AI forgery detection, visual artifact cross-validation, and cryptographic matching against blockchain ledger records.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What document types are supported?</h4>
-                    <p class="faq-answer">The system accepts PDF, JPG, PNG, DOC, and DOCX formats. It automatically classifies academic degrees, government certificates, identity credentials, revenue records, and notary documents.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What does a "Suspicious" status indicate?</h4>
-                    <p class="faq-answer">A suspicious verdict signifies that the document triggered one or more security threshold alerts (e.g. font substitution, edited metadata, or signature discrepancy). These documents are automatically flagged for manual inspector review.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">Can AuthenX operate in offline field conditions?</h4>
-                    <p class="faq-answer">Yes. Mobile and border officers can perform offline optical inspections, MRZ parsing, and local cryptographic verification even when network connectivity is severed.</p>
-                  </div>
+                <div class="help-faq-answer faq-answer">
+                  ${faq.a}
                 </div>
               </div>
-            </div>
-
-            <!-- Row 2: Moving Right -->
-            <div class="scroller-mask">
-              <div class="animate-scroll-horizontal-reverse" style="--scroll-duration: 48s;">
-                <div class="scroller-track-inner">
-                  <div class="faq-card">
-                    <h4 class="faq-title">How is blockchain integrity guaranteed?</h4>
-                    <p class="faq-answer">Each verified document computes a SHA-256 cryptographic digest that is permanently inscribed on the Institutional Verification Blockchain. Any subsequent alteration creates an immediate hash divergence.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">How do I flag a document for senior officer review?</h4>
-                    <p class="faq-answer">When viewing any verification report, click "Flag for Manual Review" in the top action bar. You can add officer notes and route the dossier to senior administrative personnel.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">Is citizen and organizational data secure?</h4>
-                    <p class="faq-answer">All documents are transmitted using TLS 1.3 encryption and stored with AES-256 cryptographic keys. Role-based access control (RBAC), multi-factor authentication, and tamper-evident audit trails ensure full compliance.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What audit trails are recorded for statutory compliance?</h4>
-                    <p class="faq-answer">Every verification attempt generates a tamper-evident audit receipt containing officer timestamp, geographic metadata, device signature, and immutable cryptographic transaction IDs.</p>
-                  </div>
-                </div>
-                <!-- Duplicate for seamless loop -->
-                <div class="scroller-track-inner" aria-hidden="true">
-                  <div class="faq-card">
-                    <h4 class="faq-title">How is blockchain integrity guaranteed?</h4>
-                    <p class="faq-answer">Each verified document computes a SHA-256 cryptographic digest that is permanently inscribed on the Institutional Verification Blockchain. Any subsequent alteration creates an immediate hash divergence.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">How do I flag a document for senior officer review?</h4>
-                    <p class="faq-answer">When viewing any verification report, click "Flag for Manual Review" in the top action bar. You can add officer notes and route the dossier to senior administrative personnel.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">Is citizen and organizational data secure?</h4>
-                    <p class="faq-answer">All documents are transmitted using TLS 1.3 encryption and stored with AES-256 cryptographic keys. Role-based access control (RBAC), multi-factor authentication, and tamper-evident audit trails ensure full compliance.</p>
-                  </div>
-                  <div class="faq-card">
-                    <h4 class="faq-title">What audit trails are recorded for statutory compliance?</h4>
-                    <p class="faq-answer">Every verification attempt generates a tamper-evident audit receipt containing officer timestamp, geographic metadata, device signature, and immutable cryptographic transaction IDs.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            `).join('')}
           </div>
-
-          <!-- Live Search Results Grid (Active when searching) -->
-          <div id="faq-search-results" style="display: none; padding: var(--space-4) var(--space-6);">
-            <div id="faq-filtered-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4);"></div>
-          </div>
-
           <div id="faq-no-results" style="display: none; padding: var(--space-8); text-align: center; color: var(--text-tertiary);">
             <i data-lucide="help-circle" style="width: 32px; height: 32px; margin: 0 auto var(--space-2); opacity: 0.5;"></i>
             <p style="text-align: center;">No questions matched your search query. Try another keyword or contact support directly.</p>
@@ -235,43 +180,21 @@ export function renderHelpPage(container) {
   // Live FAQ search filtering
   const searchInput = container.querySelector('#help-search-input');
   if (searchInput) {
-    const scrollerWrapper = container.querySelector('#faq-scroller-wrapper');
-    const searchResults = container.querySelector('#faq-search-results');
-    const filteredGrid = container.querySelector('#faq-filtered-grid');
-    const noResults = container.querySelector('#faq-no-results');
-
-    // Extract unique cards from first set
-    const allCards = Array.from(container.querySelectorAll('.scroller-track-inner:not([aria-hidden="true"]) .faq-card')).map(card => ({
-      title: card.querySelector('.faq-title').textContent,
-      answer: card.querySelector('.faq-answer').textContent
-    }));
-
     searchInput.addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase().trim();
-      if (!query) {
-        if (scrollerWrapper) scrollerWrapper.style.display = 'flex';
-        if (searchResults) searchResults.style.display = 'none';
-        if (noResults) noResults.style.display = 'none';
-        return;
-      }
+      const faqItems = container.querySelectorAll('.help-faq-item');
+      let visibleCount = 0;
 
-      const matches = allCards.filter(c => c.title.toLowerCase().includes(query) || c.answer.toLowerCase().includes(query));
+      faqItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const matches = text.includes(query);
+        item.style.display = matches ? 'block' : 'none';
+        if (matches) visibleCount++;
+      });
 
-      if (scrollerWrapper) scrollerWrapper.style.display = 'none';
-      if (matches.length > 0) {
-        if (searchResults) searchResults.style.display = 'block';
-        if (noResults) noResults.style.display = 'none';
-        if (filteredGrid) {
-          filteredGrid.innerHTML = matches.map(m => `
-            <div class="faq-card" style="width: 100%;">
-              <h4 class="faq-title">${m.title}</h4>
-              <p class="faq-answer">${m.answer}</p>
-            </div>
-          `).join('');
-        }
-      } else {
-        if (searchResults) searchResults.style.display = 'none';
-        if (noResults) noResults.style.display = 'block';
+      const noResults = container.querySelector('#faq-no-results');
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
       }
     });
   }
