@@ -5,7 +5,6 @@
 import { initRouter, registerRoute } from './router.js';
 import { renderSidebar } from './components/sidebar.js';
 import { renderTopbar } from './components/topbar.js';
-import { renderTelemetryBar } from './components/telemetryBar.js';
 import { initMotion, animateCounters } from './components/motion.js';
 
 // Pages
@@ -44,12 +43,6 @@ function init() {
     renderTopbar();
   } catch (err) {
     console.error('DocuVerify: renderTopbar error:', err);
-  }
-
-  try {
-    renderTelemetryBar();
-  } catch (err) {
-    console.error('DocuVerify: renderTelemetryBar error:', err);
   }
 
   // Initialize interactive spotlights, click ripples and physics
