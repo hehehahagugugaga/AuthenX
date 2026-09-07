@@ -704,6 +704,132 @@
   animation: fadeInUp 180ms var(--ease-mindful);
 }
 
+/* ── Habit FAQ Scroller Component ── */
+.faq-scroller-section {
+  width: 100%;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: relative;
+}
+
+.scroller-mask {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.scroller-mask::before,
+.scroller-mask::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.scroller-mask::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface-primary, #ffffff) 25%, rgba(255, 255, 255, 0) 100%);
+}
+
+.scroller-mask::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface-primary, #ffffff) 25%, rgba(255, 255, 255, 0) 100%);
+}
+
+.scroller-track-inner {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: var(--space-6);
+  padding: 0 var(--space-3);
+}
+
+.animate-scroll-horizontal {
+  display: flex;
+  width: max-content;
+  user-select: none;
+  animation: scroll-horizontal var(--scroll-duration, 50s) linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-horizontal-reverse {
+  display: flex;
+  width: max-content;
+  user-select: none;
+  animation: scroll-horizontal-reverse var(--scroll-duration, 50s) linear infinite;
+  will-change: transform;
+}
+
+.scroller-mask:hover .animate-scroll-horizontal,
+.scroller-mask:hover .animate-scroll-horizontal-reverse {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-horizontal-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.faq-card {
+  width: 360px;
+  background: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-light, #d8e3ef);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: 0 4px 16px -2px rgba(10, 25, 47, 0.05);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left !important;
+  gap: var(--space-3);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.faq-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent-400, #60a5fa);
+  box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.12);
+}
+
+.faq-card .faq-title {
+  font-family: var(--font-title), var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary, #0a192f);
+  line-height: 1.35;
+  margin: 0;
+  text-align: left !important;
+}
+
+.faq-card .faq-answer {
+  font-size: 13px;
+  color: var(--text-secondary, #2c4360);
+  line-height: 1.55;
+  margin: 0;
+  text-align: left !important;
+  display: block !important;
+}
+
 .help-contact-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
