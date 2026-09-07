@@ -9,7 +9,7 @@ export function renderHistoryPage(container) {
     <div class="page-header">
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <div>
-          <h1>Verification History</h1>
+          <h1>Verification History & <em class="editorial-italic">Immutable</em> Audit Ledger</h1>
           <p>Review all past document verification attempts and their results.</p>
         </div>
         <button class="btn btn-secondary" id="export-history-btn">

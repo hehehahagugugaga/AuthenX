@@ -33,7 +33,7 @@ function renderUploadState(container) {
       <!-- Top of Page: Title & Action Buttons -->
       <div class="page-header verify-header-top">
         <div class="page-header-text">
-          <h1>Verify Document</h1>
+          <h1>Document Verification & <em class="editorial-italic">Forensic</em> Tamper Detection</h1>
           <p>Upload a document or take a picture live from your camera to analyze its authenticity and integrity.</p>
         </div>
         <div class="top-verify-actions">

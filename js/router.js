@@ -20,7 +20,7 @@ export function getCurrentRoute() {
 
 export function initRouter() {
   const handleRoute = () => {
-    const hash = window.location.hash.slice(1) || 'dashboard';
+    const hash = window.location.hash.slice(1) || 'home';
     currentRoute = hash;
 
     // Update navigation active state
@@ -29,10 +29,16 @@ export function initRouter() {
       item.classList.toggle('active', route === hash);
     });
 
+    // Synchronize the sliding indicator in header navigation
+    if (window.DocuVerify && typeof window.DocuVerify.updateNavIndicator === 'function') {
+      window.DocuVerify.updateNavIndicator();
+    }
+
     // Update topbar breadcrumb
     const breadcrumb = document.getElementById('breadcrumb-current');
     if (breadcrumb) {
       const titles = {
+        'home': 'Home',
         'dashboard': 'Dashboard',
         'verify': 'Verify Document',
         'history': 'Verification History',
@@ -42,12 +48,12 @@ export function initRouter() {
         'settings': 'Settings',
         'help': 'Help & Support'
       };
-      breadcrumb.textContent = titles[hash] || 'Dashboard';
+      breadcrumb.textContent = titles[hash] || 'Home';
     }
 
     // Handle search modal / notification drawer hash shortcuts
     if (hash === 'documents' || hash === 'search') {
-      const prevRoute = (currentRoute && currentRoute !== 'documents' && currentRoute !== 'search') ? currentRoute : 'dashboard';
+      const prevRoute = (currentRoute && currentRoute !== 'documents' && currentRoute !== 'search') ? currentRoute : 'home';
       currentRoute = prevRoute;
       history.replaceState(null, '', '#' + prevRoute);
       if (window.DocuVerify && window.DocuVerify.openDocumentSearchModal) {
@@ -56,7 +62,7 @@ export function initRouter() {
       return;
     }
     if (hash === 'alerts' || hash === 'notifications') {
-      const prevRoute = (currentRoute && currentRoute !== 'alerts' && currentRoute !== 'notifications') ? currentRoute : 'dashboard';
+      const prevRoute = (currentRoute && currentRoute !== 'alerts' && currentRoute !== 'notifications') ? currentRoute : 'home';
       currentRoute = prevRoute;
       history.replaceState(null, '', '#' + prevRoute);
       if (window.DocuVerify && window.DocuVerify.openNotificationsDrawer) {
@@ -69,19 +75,19 @@ export function initRouter() {
     const mainContent = document.getElementById('main-content');
     if (mainContent && routes[hash]) {
       mainContent.innerHTML = '';
-      mainContent.style.opacity = '0';
       routes[hash](mainContent);
-      requestAnimationFrame(() => {
-        mainContent.style.opacity = '1';
-      });
+      // Synchronize indicator
+      if (window.DocuVerify && typeof window.DocuVerify.updateNavIndicator === 'function') {
+        requestAnimationFrame(window.DocuVerify.updateNavIndicator);
+      }
     } else if (mainContent && !routes[hash]) {
       mainContent.innerHTML = `
         <div class="empty-state" style="min-height: 60vh;">
           <i data-lucide="construction"></i>
           <h3>Page Not Found</h3>
           <p>The requested page does not exist.</p>
-          <button class="btn btn-primary mt-4" onclick="location.hash='dashboard'">
-            Go to Dashboard
+          <button class="btn btn-primary mt-4" onclick="location.hash='home'">
+            Go to Home
           </button>
         </div>
       `;

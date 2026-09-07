@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AuthenX — Secure Document Authentication & Verification System</title>
-  <meta name="description" content="AuthenX — Government-grade document authentication and verification platform powered by AI, cryptographic integrity, and blockchain technology. Verify documents, detect tampering, and ensure authenticity." />
+  <meta name="description"
+    content="AuthenX — Government-grade document authentication and verification platform powered by AI, cryptographic integrity, and blockchain technology. Verify documents, detect tampering, and ensure authenticity." />
   <meta name="keywords" content="document verification, authentication, blockchain, government, SIH, PS 188, AuthenX" />
   <meta name="author" content="AuthenX" />
   <meta name="theme-color" content="#0F1B2D" />
 
   <!-- Favicon (inline SVG) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
 
-  <!-- Google Fonts: Outfit (Logo Font / Headings) + Poppins (Display) + Plus Jakarta Sans (UI) + JetBrains Mono (Tech) -->
+  <!-- Google Fonts: Instrument Serif + Plus Jakarta Sans + Outfit + JetBrains Mono + Newsreader -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -24,15 +29,17 @@
   <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles/variables.css" />
-  <link rel="stylesheet" href="styles/base.css" />
-  <link rel="stylesheet" href="styles/layout.css?v=10" />
-  <link rel="stylesheet" href="styles/components.css?v=10" />
-  <link rel="stylesheet" href="styles/pages/dashboard.css?v=10" />
-  <link rel="stylesheet" href="styles/pages/verify.css?v=10" />
-  <link rel="stylesheet" href="styles/pages/history.css?v=10" />
-  <link rel="stylesheet" href="styles/responsive.css?v=10" />
+  <link rel="stylesheet" href="styles/variables.css?v=29" />
+  <link rel="stylesheet" href="styles/base.css?v=29" />
+  <link rel="stylesheet" href="styles/layout.css?v=29" />
+  <link rel="stylesheet" href="styles/components.css?v=29" />
+  <link rel="stylesheet" href="styles/pages/home.css?v=29" />
+  <link rel="stylesheet" href="styles/pages/dashboard.css?v=29" />
+  <link rel="stylesheet" href="styles/pages/verify.css?v=29" />
+  <link rel="stylesheet" href="styles/pages/history.css?v=29" />
+  <link rel="stylesheet" href="styles/responsive.css?v=29" />
 </head>
+
 <body>
   <div class="app-layout">
     <!-- Topbar (Unified Header with Brand, Navigation & Controls) -->
@@ -67,13 +74,13 @@
   </div>
 
   <!-- App Script (Bundled for seamless operation on localhost, live-server, and file:// protocols) -->
-  <script src="js/bundle.js?v=10"></script>
+  <script src="js/bundle.js?v=29"></script>
 
   <!-- Fallback Watchdog for immediate visual recovery -->
   <script>
-    window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('DOMContentLoaded', function () {
       // If skeleton is still present after 1 second, ensure clean initialization
-      setTimeout(function() {
+      setTimeout(function () {
         const skeleton = document.querySelector('.skeleton');
         if (skeleton && window.DocuVerify && !window.DocuVerify.initialized) {
           console.warn('DocuVerify watchdog triggered');
@@ -82,4 +89,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -8,7 +8,7 @@ import { createLineChart, createBarChart, createDoughnutChart, createAreaChart, 
 export function renderAnalyticsPage(container) {
   container.innerHTML = `
     <div class="page-header">
-      <h1>Analytics</h1>
+      <h1>Performance Analytics & <em class="editorial-italic">Institutional</em> Security Dynamics</h1>
       <p>Comprehensive analytics on document verification performance and trends.</p>
     </div>
 

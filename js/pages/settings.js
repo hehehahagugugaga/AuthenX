@@ -5,7 +5,7 @@
 export function renderSettingsPage(container) {
   container.innerHTML = `
     <div class="page-header">
-      <h1>Settings</h1>
+      <h1>Officer Settings & <em class="editorial-italic">System</em> Security Controls</h1>
       <p>Manage your account, security preferences, and system configuration.</p>
     </div>
 

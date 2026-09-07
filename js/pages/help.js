@@ -7,7 +7,7 @@ export function renderHelpPage(container) {
     <div class="help-page-container">
       <!-- Centered Page Header -->
       <div class="page-header">
-        <h1>Help & Support</h1>
+        <h1>Help Center & <em class="editorial-italic">Operational</em> Guidelines</h1>
         <p>Find answers, documentation, operational guidelines, and contact technical support.</p>
       </div>
 

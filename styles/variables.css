@@ -15,7 +15,7 @@
   --color-primary-300: #3D6B99;
   --color-primary-200: #5A8DBF;
   --color-primary-100: #8BB4DB;
-  --color-primary-50:  #C5DAF0;
+  --color-primary-50: #C5DAF0;
 
   /* ── Accent / Blue ── */
   --color-accent-700: #1D4ED8;
@@ -25,7 +25,7 @@
   --color-accent-300: #93C5FD;
   --color-accent-200: #BFDBFE;
   --color-accent-100: #DBEAFE;
-  --color-accent-50:  #EFF6FF;
+  --color-accent-50: #EFF6FF;
 
   /* ── Cyan ── */
   --color-cyan-600: #0891B2;
@@ -41,7 +41,7 @@
   --color-success-400: #34D399;
   --color-success-300: #6EE7B7;
   --color-success-100: #D1FAE5;
-  --color-success-50:  #ECFDF5;
+  --color-success-50: #ECFDF5;
 
   /* ── Warning / Amber ── */
   --color-warning-700: #B45309;
@@ -50,7 +50,7 @@
   --color-warning-400: #FBBF24;
   --color-warning-300: #FCD34D;
   --color-warning-100: #FEF3C7;
-  --color-warning-50:  #FFFBEB;
+  --color-warning-50: #FFFBEB;
 
   /* ── Danger / Red ── */
   --color-danger-700: #B91C1C;
@@ -59,11 +59,11 @@
   --color-danger-400: #F87171;
   --color-danger-300: #FCA5A5;
   --color-danger-100: #FEE2E2;
-  --color-danger-50:  #FEF2F2;
+  --color-danger-50: #FEF2F2;
 
   /* ── Neutrals ── */
   --color-white: #FFFFFF;
-  --color-gray-50:  #F8FAFC;
+  --color-gray-50: #F8FAFC;
   --color-gray-100: #F1F5F9;
   --color-gray-200: #E2E8F0;
   --color-gray-300: #CBD5E1;
@@ -97,23 +97,33 @@
   --border-focus: #2563eb;
   --border-sidebar: #d8e3ef;
 
-  /* ── Logo Font & Curated Typography System (AuthenX Identity) ── */
+  /* ── Curated Editorial Typography System (Plus Jakarta Sans + Instrument Serif) ── */
   --font-logo: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-title: 'Outfit', 'Poppins', var(--font-logo), sans-serif;
-  --font-display: var(--font-logo);
+  --font-title: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-editorial-serif: 'Instrument Serif', 'Newsreader', Georgia, serif;
+  --color-editorial-accent: var(--color-accent-600); /* Azure Cobalt matching platform palette */
   --font-serif: 'Newsreader', 'Times New Roman', Times, 'Charter', 'Baskerville', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   --font-family: var(--font-sans);
 
-  --text-xs:   0.75rem;    /* 12px */
-  --text-sm:   0.8125rem;  /* 13px */
-  --text-base: 0.875rem;   /* 14px */
-  --text-md:   1rem;       /* 16px */
-  --text-lg:   1.25rem;    /* 20px */
-  --text-xl:   1.5rem;     /* 24px */
-  --text-2xl:  2rem;       /* 32px */
-  --text-3xl:  2.5rem;     /* 40px */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.8125rem;
+  /* 13px */
+  --text-base: 0.875rem;
+  /* 14px */
+  --text-md: 1rem;
+  /* 16px */
+  --text-lg: 1.25rem;
+  /* 20px */
+  --text-xl: 1.5rem;
+  /* 24px */
+  --text-2xl: 2rem;
+  /* 32px */
+  --text-3xl: 2.5rem;
+  /* 40px */
 
   --font-thin: 100;
   --font-extralight: 200;
@@ -130,16 +140,26 @@
   --leading-relaxed: 1.625;
 
   /* ── Spacing ── */
-  --space-1:  0.25rem;  /* 4px */
-  --space-2:  0.5rem;   /* 8px */
-  --space-3:  0.75rem;  /* 12px */
-  --space-4:  1rem;     /* 16px */
-  --space-5:  1.25rem;  /* 20px */
-  --space-6:  1.5rem;   /* 24px */
-  --space-8:  2rem;     /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-5: 1.25rem;
+  /* 20px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-10: 2.5rem;
+  /* 40px */
+  --space-12: 3rem;
+  /* 48px */
+  --space-16: 4rem;
+  /* 64px */
 
   /* ── Radii ── */
   --radius-sm: 4px;
@@ -150,11 +170,11 @@
   --radius-full: 9999px;
 
   /* ── Shadows ── */
-  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.15);
 
   /* ── Transitions & Mindful Motion ── */
@@ -179,4 +199,31 @@
   --z-modal: 210;
   --z-tooltip: 300;
   --z-notification: 400;
+
+  /* ── Core Design System Tokens ── */
+  --font-title: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-family: var(--font-sans);
+  --accent-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+  --accent-gradient-hover: linear-gradient(135deg, #1d4ed8, #1e40af);
+  --accent-glow: rgba(37, 99, 235, 0.35);
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --body-bg: #f1f5fa;
+  --body-bg-gradient: 
+    radial-gradient(1200px 700px at 50% -120px, rgba(37, 99, 235, 0.18), transparent 65%),
+    radial-gradient(900px 600px at 100% 25%, rgba(6, 182, 212, 0.15), transparent 55%),
+    radial-gradient(1000px 700px at 0% 65%, rgba(99, 102, 241, 0.12), transparent 50%),
+    radial-gradient(800px 500px at 85% 90%, rgba(245, 158, 11, 0.06), transparent 50%),
+    linear-gradient(165deg, #fafcff 0%, #f1f5fa 40%, #e5ecf6 100%);
+  --topbar-bg: rgba(255, 255, 255, 0.92);
+  --topbar-border: var(--border-light);
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-border: rgba(226, 232, 240, 0.9);
+  --card-hover-border: rgba(191, 219, 254, 0.85);
+  --card-hover-glow: rgba(37, 99, 235, 0.14);
+  --heading-gradient: linear-gradient(135deg, #0a192f 0%, #1e3a8a 70%, #2563eb 100%);
+  --input-bg: #ffffff;
+  --input-border: var(--border-default);
+  --input-text: var(--text-primary);
+  --theme-badge-color: #2563eb;
 }

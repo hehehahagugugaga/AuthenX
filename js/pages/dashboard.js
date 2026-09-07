@@ -10,7 +10,7 @@ let verificationChart = null;
 export function renderDashboard(container) {
   container.innerHTML = `
     <div class="page-header">
-      <h1>Document Authentication Dashboard</h1>
+      <h1>Document Authentication & <em class="editorial-italic">Operational</em> Telemetry</h1>
       <p>Monitor document verification activity, authenticity results, and security alerts.</p>
     </div>
 

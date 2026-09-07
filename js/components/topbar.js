@@ -14,7 +14,7 @@ export function renderTopbar() {
       <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Navigation Menu" title="Open Navigation Menu" onclick="window.DocuVerify?.openMobileSidebar?.()">
         <i data-lucide="menu"></i>
       </button>
-      <a class="topbar-brand" href="#dashboard" title="AuthenX — Document Verification Platform">
+      <a class="topbar-brand" href="#home" title="AuthenX — Document Verification Platform">
         <img src="assets/logo.png" alt="AuthenX" class="topbar-brand-logo" />
       </a>
       <div class="topbar-brand-divider"></div>
@@ -25,10 +25,15 @@ export function renderTopbar() {
       </div>
     </div>
 
-    <!-- Center: Primary Navigation -->
+    <!-- Center: Primary Navigation with Sliding Indicator -->
     <nav class="topbar-nav" aria-label="Main Navigation">
-      <div class="topbar-nav-pill">
-        <a class="sidebar-nav-item topbar-nav-item active" data-route="dashboard" href="#dashboard">
+      <div class="topbar-nav-pill" id="topbar-nav-pill">
+        <div class="topbar-nav-indicator" id="topbar-nav-indicator"></div>
+        <a class="sidebar-nav-item topbar-nav-item active" data-route="home" href="#home">
+          <i data-lucide="home"></i>
+          <span>Home</span>
+        </a>
+        <a class="sidebar-nav-item topbar-nav-item" data-route="dashboard" href="#dashboard">
           <i data-lucide="layout-dashboard"></i>
           <span>Dashboard</span>
         </a>
@@ -291,4 +296,53 @@ export function renderTopbar() {
       });
     }
   }
+
+  // ── Smooth Sliding Pill Indicator Setup ──
+  const pill = topbar.querySelector('#topbar-nav-pill');
+  const indicator = topbar.querySelector('#topbar-nav-indicator');
+
+  function moveIndicatorTo(item) {
+    if (!pill || !indicator || !item) return;
+    const pillRect = pill.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    if (pillRect.width === 0 || itemRect.width === 0) return;
+
+    const left = itemRect.left - pillRect.left;
+    const width = itemRect.width;
+
+    indicator.style.transform = `translateX(${left}px)`;
+    indicator.style.width = `${width}px`;
+    indicator.style.opacity = '1';
+    pill.classList.add('has-indicator');
+  }
+
+  function syncIndicatorWithActive() {
+    const activeItem = pill?.querySelector('.topbar-nav-item.active');
+    if (activeItem) {
+      moveIndicatorTo(activeItem);
+    }
+  }
+
+  window.DocuVerify = window.DocuVerify || {};
+  window.DocuVerify.updateNavIndicator = syncIndicatorWithActive;
+
+  if (pill) {
+    pill.addEventListener('click', (e) => {
+      const item = e.target.closest('.topbar-nav-item');
+      if (item) {
+        moveIndicatorTo(item);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(syncIndicatorWithActive);
+    });
+
+    // Initial position after render and font loading
+    requestAnimationFrame(() => {
+      setTimeout(syncIndicatorWithActive, 40);
+      setTimeout(syncIndicatorWithActive, 200);
+    });
+  }
 }
+

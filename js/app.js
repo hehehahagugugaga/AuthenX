@@ -7,6 +7,7 @@ import { renderSidebar } from './components/sidebar.js';
 import { renderTopbar } from './components/topbar.js';
 
 // Pages
+import { renderHomePage } from './pages/home.js';
 import { renderDashboard } from './pages/dashboard.js';
 import { renderVerifyPage } from './pages/verify.js';
 import { renderHistoryPage } from './pages/history.js';
@@ -19,6 +20,15 @@ import './components/modals.js';
 
 function init() {
   window.DocuVerify = window.DocuVerify || {};
+
+  // Clean up any lingering theme attributes and docks
+  try {
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('font-dock')?.remove();
+    document.getElementById('palette-dock')?.remove();
+    localStorage.removeItem('authenx_color_palette');
+    localStorage.removeItem('authenx_font_color_option');
+  } catch (e) {}
 
   // Render shell components with individual isolation
   try {
@@ -35,6 +45,7 @@ function init() {
 
   // Register routes & initialize router
   try {
+    registerRoute('home', renderHomePage);
     registerRoute('dashboard', renderDashboard);
     registerRoute('verify', renderVerifyPage);
     registerRoute('history', renderHistoryPage);
