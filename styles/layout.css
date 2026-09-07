@@ -129,7 +129,7 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* ── Sliding Active Pill Indicator ── */
+/* ── Sliding Active Pill Indicator (Viewport Container) ── */
 .topbar-nav-indicator {
   position: absolute;
   top: 4px;
@@ -140,7 +140,8 @@
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.38);
   pointer-events: none;
-  z-index: 1;
+  z-index: 5;
+  overflow: hidden;
   opacity: 0;
   transition: transform 0.32s cubic-bezier(0.25, 1, 0.4, 1),
     width 0.32s cubic-bezier(0.25, 1, 0.4, 1),
@@ -148,9 +149,50 @@
   will-change: transform, width;
 }
 
+/* ── Counter-Translating Inner Clip (The Crisp White Mask Layer) ── */
+.topbar-nav-indicator-clip {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 6px;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.32s cubic-bezier(0.25, 1, 0.4, 1),
+    width 0.32s cubic-bezier(0.25, 1, 0.4, 1);
+  will-change: transform;
+}
+
+.topbar-nav-indicator-clip .topbar-nav-item {
+  position: static !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.topbar-nav-indicator-clip .topbar-nav-item svg {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.topbar-nav-indicator-clip .topbar-nav-item span {
+  color: #ffffff !important;
+}
+
+/* Base Nav Items (The Dark Slate Base Layer) */
 .topbar-nav-item {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -162,9 +204,9 @@
   font-weight: 500;
   cursor: pointer;
   background: transparent;
-  transition: color 0.22s ease, transform 120ms var(--ease-mindful);
   text-decoration: none;
   white-space: nowrap;
+  transition: color 0.18s ease;
 }
 
 .topbar-nav-item:active {
@@ -176,19 +218,25 @@
 }
 
 /* Default active styling before JS mounts the sliding indicator */
-.topbar-nav-item.active {
+.topbar-nav-pill:not(.has-indicator) .topbar-nav-item.active {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
   font-weight: 600;
 }
 
-/* Seamlessly delegate background to sliding indicator once active */
-.topbar-nav-pill.has-indicator .topbar-nav-item.active {
+/* Once sliding indicator is mounted, base items STAY dark and transparent!
+   The indicator's clipping mask reveals the white text layer over the blue pill.
+   This guarantees ZERO contrast flickers or inverted text colors during transitions! */
+.topbar-nav-pill.has-indicator .topbar-nav-item:not(.is-clone) {
   background: transparent !important;
   box-shadow: none !important;
-  color: #ffffff !important;
-  font-weight: 600;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.topbar-nav-pill.has-indicator .topbar-nav-item:not(.is-clone):hover {
+  color: var(--text-primary) !important;
 }
 
 .topbar-nav-item svg {
@@ -197,12 +245,12 @@
   flex-shrink: 0;
   color: inherit;
   opacity: 0.85;
-  transition: color 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+  transition: color 0.18s ease, opacity 0.18s ease;
 }
 
-.topbar-nav-item.active svg {
-  color: #ffffff;
-  opacity: 1;
+.topbar-nav-pill.has-indicator .topbar-nav-item:not(.is-clone) svg {
+  color: inherit !important;
+  opacity: 0.85 !important;
 }
 
 /* ── Topbar Right: Controls (Notifications, Profile) ── */

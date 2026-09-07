@@ -342,7 +342,9 @@
     <!-- Center: Primary Navigation with Sliding Indicator -->
     <nav class="topbar-nav" aria-label="Main Navigation">
       <div class="topbar-nav-pill" id="topbar-nav-pill">
-        <div class="topbar-nav-indicator" id="topbar-nav-indicator"></div>
+        <div class="topbar-nav-indicator" id="topbar-nav-indicator">
+          <div class="topbar-nav-indicator-clip" id="topbar-nav-indicator-clip" aria-hidden="true"></div>
+        </div>
         <a class="sidebar-nav-item topbar-nav-item active" data-route="home" href="#home">
           <i data-lucide="home"></i>
           <span>Home</span>
@@ -584,8 +586,26 @@
         });
       }
     }
+    // ── Smooth Sliding Pill Indicator Setup (Dual-Layer Optical Wipe) ──
     const pill = topbar.querySelector("#topbar-nav-pill");
     const indicator = topbar.querySelector("#topbar-nav-indicator");
+    const indicatorClip = topbar.querySelector("#topbar-nav-indicator-clip");
+
+    function syncIndicatorContent() {
+      if (!pill || !indicatorClip) return;
+      const baseItems = pill.querySelectorAll(".topbar-nav-item:not(.is-clone)");
+      indicatorClip.innerHTML = "";
+      baseItems.forEach((item) => {
+        const clone = item.cloneNode(true);
+        clone.className = "topbar-nav-item is-clone";
+        clone.removeAttribute("id");
+        clone.removeAttribute("href");
+        clone.setAttribute("tabindex", "-1");
+        clone.setAttribute("aria-hidden", "true");
+        indicatorClip.appendChild(clone);
+      });
+    }
+
     function moveIndicatorTo(item) {
       if (!pill || !indicator || !item) return;
       const pillRect = pill.getBoundingClientRect();
@@ -597,28 +617,41 @@
       indicator.style.width = `${width}px`;
       indicator.style.opacity = "1";
       pill.classList.add("has-indicator");
+      if (indicatorClip) {
+        indicatorClip.style.transform = `translateX(-${left}px)`;
+        indicatorClip.style.width = `${pillRect.width}px`;
+      }
     }
+
     function syncIndicatorWithActive() {
-      const activeItem = pill?.querySelector(".topbar-nav-item.active");
+      if (!indicatorClip || indicatorClip.children.length === 0) {
+        syncIndicatorContent();
+      }
+      const activeItem = pill?.querySelector(".topbar-nav-item:not(.is-clone).active");
       if (activeItem) {
         moveIndicatorTo(activeItem);
       }
     }
+
     window.DocuVerify = window.DocuVerify || {};
     window.DocuVerify.updateNavIndicator = syncIndicatorWithActive;
+
     if (pill) {
       pill.addEventListener("click", (e) => {
-        const item = e.target.closest(".topbar-nav-item");
+        const item = e.target.closest(".topbar-nav-item:not(.is-clone)");
         if (item) {
           moveIndicatorTo(item);
         }
       });
       window.addEventListener("resize", () => {
+        syncIndicatorContent();
         requestAnimationFrame(syncIndicatorWithActive);
       });
       requestAnimationFrame(() => {
+        syncIndicatorContent();
         setTimeout(syncIndicatorWithActive, 40);
         setTimeout(syncIndicatorWithActive, 200);
+        setTimeout(syncIndicatorWithActive, 500);
       });
     }
   }
