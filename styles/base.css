@@ -631,9 +631,229 @@ h6 {
   animation: spin 1s linear infinite;
 }
 
+/* ── Living Atmosphere: Dynamic Ambient Glow Orbs ── */
+.ambient-living-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  contain: strict;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.ambient-orb-1 {
+  top: -120px;
+  left: 15%;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+  filter: blur(80px);
+  animation: ambientDrift1 26s ease-in-out infinite alternate;
+}
+
+.ambient-orb-2 {
+  top: 35%;
+  right: -100px;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(6, 182, 212, 0.04) 50%, transparent 70%);
+  filter: blur(90px);
+  animation: ambientDrift2 32s ease-in-out infinite alternate;
+}
+
+.ambient-orb-3 {
+  bottom: -120px;
+  left: 8%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 70%);
+  filter: blur(85px);
+  animation: ambientDrift3 24s ease-in-out infinite alternate;
+}
+
+@keyframes ambientDrift1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(60px, 45px, 0) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-40px, 80px, 0) scale(0.95);
+    opacity: 0.75;
+  }
+}
+
+@keyframes ambientDrift2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate3d(-70px, -40px, 0) scale(1.12);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(30px, -60px, 0) scale(0.9);
+    opacity: 0.75;
+  }
+}
+
+@keyframes ambientDrift3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(50px, -50px, 0) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-30px, 30px, 0) scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* ── Subtle Cyber Grid Overlay ── */
+.ambient-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 40%, transparent 80%);
+  pointer-events: none;
+}
+
+/* ── Smooth Page Entrance Transitions ── */
+@keyframes pageEnterFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter-active {
+  animation: pageEnterFadeUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Interactive Card Dynamic Spotlight ── */
+.interactive-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(37, 99, 235, 0.09), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 2;
+}
+
+.interactive-spotlight:hover::after {
+  opacity: 1;
+}
+
+/* ── Living Status Pulsing Indicators ── */
+.live-pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-success-500, #10b981);
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: liveDotPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  flex-shrink: 0;
+}
+
+.live-pulse-dot.warning {
+  background-color: var(--color-warning-500, #f59e0b);
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+}
+
+.live-pulse-dot.accent {
+  background-color: var(--color-accent-500, #3b82f6);
+  box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+}
+
+@keyframes liveDotPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* ── Floating Physics Elements ── */
+.floating-subtle {
+  animation: floatSubtle 6s ease-in-out infinite;
+}
+
+.floating-subtle-delayed {
+  animation: floatSubtle 7s ease-in-out 1.5s infinite;
+}
+
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* ── Shimmering Light Effect on Hover ── */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.btn-shimmer:hover::before {
+  left: 140%;
+  transition: left 0.75s ease-in-out;
+}
+
 /* Reduced Motion Override for Accessibility */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {

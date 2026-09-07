@@ -170,53 +170,98 @@ export function renderHomePage(container) {
             </div>
             <div class="home-showcase-terminal-title">
               <i data-lucide="terminal" style="width:13px;height:13px;"></i>
-              <span>AuthenX Core Engine — Real-time Forensic Stream</span>
+              <span>AuthenX Core Engine — Interactive Live Forensic Terminal</span>
             </div>
-            <span class="badge badge-success" style="font-size:10px;">ENGINE ACTIVE</span>
+            <span class="badge badge-success" style="font-size:10px;"><span class="live-pulse-dot" style="width:6px;height:6px;margin-right:4px;"></span>ENGINE ACTIVE</span>
           </div>
 
           <div class="home-showcase-body">
-            <!-- Simulated Document Scanner -->
+            <!-- Simulated Document Scanner & Interactive Playground -->
             <div class="home-scanner-preview">
-              <div class="home-scanner-laser"></div>
-              
-              <div class="home-doc-mock">
-                <div class="home-doc-mock-header">
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <i data-lucide="file-badge-2" style="color:var(--color-accent-400);width:20px;height:20px;"></i>
-                    <span style="font-weight:700;font-size:13px;">IN-GOV-2026-CERT-982</span>
-                  </div>
-                  <span class="home-verified-stamp">
-                    <i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.4%)
-                  </span>
-                </div>
+              <!-- Sample Document Selector Pills -->
+              <div class="playground-sample-tabs" role="tablist" aria-label="Sample Documents">
+                <button class="sample-doc-pill active" data-sample="sovereign-id">
+                  <i data-lucide="file-check-2" style="width:12px;height:12px;"></i>
+                  <span>Sovereign ID</span>
+                </button>
+                <button class="sample-doc-pill" data-sample="degree">
+                  <i data-lucide="graduation-cap" style="width:12px;height:12px;"></i>
+                  <span>Degree Certificate</span>
+                </button>
+                <button class="sample-doc-pill" data-sample="land-deed">
+                  <i data-lucide="map-pin" style="width:12px;height:12px;"></i>
+                  <span>Land Title Deed</span>
+                </button>
+                <button class="sample-doc-pill warning" data-sample="forged">
+                  <i data-lucide="alert-triangle" style="width:12px;height:12px;"></i>
+                  <span>Forged Sample</span>
+                </button>
+              </div>
 
-                <div class="home-doc-details">
-                  <div class="home-doc-detail-row">
-                    <span>DOCUMENT TYPE:</span>
-                    <span style="color:#ffffff;">National Identity Credential</span>
+              <!-- Interactive Scanner Preview Frame -->
+              <div style="position: relative; overflow: hidden; border-radius: 12px;">
+                <div class="home-scanner-laser" id="playground-laser"></div>
+                <div id="tamper-highlight-box" class="doc-tamper-box" style="display:none; top: 120px; right: 20px; width: 140px; height: 50px;"></div>
+                
+                <div class="home-doc-mock" id="playground-doc-mock">
+                  <div class="home-doc-mock-header">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <i data-lucide="file-badge-2" id="playground-doc-icon" style="color:var(--color-accent-400);width:20px;height:20px;"></i>
+                      <span style="font-weight:700;font-size:13px;" id="playground-doc-id">IN-GOV-2026-CERT-982</span>
+                    </div>
+                    <span class="home-verified-stamp" id="playground-doc-stamp">
+                      <i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.8%)
+                    </span>
                   </div>
-                  <div class="home-doc-detail-row">
-                    <span>ISSUING AUTHORITY:</span>
-                    <span style="color:#ffffff;">Ministry of Institutional Governance</span>
+
+                  <div class="home-doc-details">
+                    <div class="home-doc-detail-row">
+                      <span>DOCUMENT TYPE:</span>
+                      <span style="color:#ffffff;" id="playground-doc-type">National Identity Credential</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>ISSUING AUTHORITY:</span>
+                      <span style="color:#ffffff;" id="playground-doc-auth">Ministry of Institutional Governance</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>CRYPTOGRAPHIC HASH:</span>
+                      <span style="color:var(--color-cyan-400);font-family:monospace;" id="playground-doc-hash">e3b0c44298fc1c149afbf4c8...</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>WATERMARK INTEGRITY:</span>
+                      <span style="color:#34d399;" id="playground-doc-watermark">PASSED (99.8% Match)</span>
+                    </div>
+                    <div class="home-doc-detail-row" style="border-bottom:none;">
+                      <span>LAYER SCAN RESULT:</span>
+                      <span style="color:#34d399;" id="playground-doc-alteration">0 Alterations Detected</span>
+                    </div>
                   </div>
-                  <div class="home-doc-detail-row">
-                    <span>CRYPTOGRAPHIC HASH:</span>
-                    <span style="color:var(--color-cyan-400);">e3b0c44298fc1c149afbf4c8...</span>
-                  </div>
-                  <div class="home-doc-detail-row">
-                    <span>WATERMARK INTEGRITY:</span>
-                    <span style="color:#34d399;">PASSED (99.8% Match)</span>
-                  </div>
-                  <div class="home-doc-detail-row" style="border-bottom:none;">
-                    <span>LAYER MODIFICATION SCAN:</span>
-                    <span style="color:#34d399;">0 Alterations Detected</span>
-                  </div>
+                </div>
+              </div>
+
+              <!-- Live Streaming Forensic Terminal Log -->
+              <div style="margin-top: 12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <span style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.04em;text-transform:uppercase;">
+                    <i data-lucide="terminal" style="width:11px;height:11px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
+                    Real-Time Forensic Log Stream
+                  </span>
+                  <button class="playground-trigger-btn btn-shimmer" id="trigger-scan-btn">
+                    <i data-lucide="refresh-cw" style="width:12px;height:12px;"></i>
+                    <span>Run Deep Neural Audit</span>
+                  </button>
+                </div>
+                <div class="terminal-log-stream" id="playground-terminal-logs">
+                  <div class="terminal-log-line info">> [0.08s] High-resolution optical matrix decoded (1200 DPI)</div>
+                  <div class="terminal-log-line info">> [0.19s] Neural kerning & font geometry audit completed</div>
+                  <div class="terminal-log-line success">> [0.28s] Spectral watermark density: 99.8% verified</div>
+                  <div class="terminal-log-line success">> [0.37s] Inscribing consensus digest to Block #4,819,302</div>
+                  <div class="terminal-log-line success">> [0.44s] RESULT: IMMUTABLE PASS (Zero alterations detected)</div>
                 </div>
               </div>
             </div>
 
-            <!-- Value Prop Bullets -->
+            <!-- Value Prop Bullets with interactive pulse -->
             <div class="home-showcase-features">
               <div class="home-showcase-feature-item">
                 <div class="home-feature-check-icon">
@@ -569,6 +614,181 @@ export function renderHomePage(container) {
       }
     });
   });
+
+  // ── Interactive Forensic Scanner Playground Logic ──
+  const sampleData = {
+    'sovereign-id': {
+      id: 'IN-GOV-2026-CERT-982',
+      type: 'National Identity Credential',
+      authority: 'Ministry of Institutional Governance',
+      hash: 'e3b0c44298fc1c149afbf4c8...',
+      watermark: 'PASSED (99.8% Match)',
+      alteration: '0 Alterations Detected',
+      statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.8%)',
+      isTampered: false,
+      logs: [
+        { type: 'info', text: '> [0.08s] High-resolution optical matrix decoded (1200 DPI)' },
+        { type: 'info', text: '> [0.19s] Neural kerning & font geometry audit completed' },
+        { type: 'success', text: '> [0.28s] Spectral watermark density: 99.8% verified' },
+        { type: 'success', text: '> [0.37s] Inscribing consensus digest to Block #4,819,302' },
+        { type: 'success', text: '> [0.44s] RESULT: IMMUTABLE PASS (Zero alterations detected)' }
+      ]
+    },
+    'degree': {
+      id: 'MUM-UNI-2025-BTECH-401',
+      type: 'Bachelor of Technology (Honours)',
+      authority: 'University of Mumbai Examination Board',
+      hash: '8f43a9120bc71e88410293da...',
+      watermark: 'PASSED (99.4% Match)',
+      alteration: '0 Alterations Detected',
+      statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.4%)',
+      isTampered: false,
+      logs: [
+        { type: 'info', text: '> [0.07s] University seal optical vector extracted' },
+        { type: 'info', text: '> [0.16s] Registrar digital signature cryptographic check: VALID' },
+        { type: 'success', text: '> [0.26s] Academic ledger cross-referenced against National Archive' },
+        { type: 'success', text: '> [0.35s] Merkle tree leaf confirmed in Sovereign Ledger' },
+        { type: 'success', text: '> [0.41s] RESULT: ATTESTED GENUINE (100% Academic Trust)' }
+      ]
+    },
+    'land-deed': {
+      id: 'REV-MH-PUNE-2026-7729',
+      type: 'Statutory Land Ownership Title',
+      authority: 'State Revenue & Registration Dept',
+      hash: '77c29ba0482b9914ea661001...',
+      watermark: 'PASSED (99.9% Match)',
+      alteration: '0 Alterations Detected',
+      statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.9%)',
+      isTampered: false,
+      logs: [
+        { type: 'info', text: '> [0.09s] Geospatial coordinates verified: 18.5204° N, 73.8567° E' },
+        { type: 'info', text: '> [0.21s] Stamp paper security fibers spectral reflectance verified' },
+        { type: 'success', text: '> [0.31s] Chain of title unbroken across 4 previous transactions' },
+        { type: 'success', text: '> [0.39s] Dual officer multi-sig validation passed' },
+        { type: 'success', text: '> [0.45s] RESULT: DEED ANCHORED (Statutory Legal Certainty)' }
+      ]
+    },
+    'forged': {
+      id: 'FORGED-SAMPLE-X992',
+      type: 'Counterfeit Academic Diploma',
+      authority: 'Unauthorized Issuer (Fabricated)',
+      hash: '000000000000000000000000...',
+      watermark: 'FAILED (42.1% Low Match)',
+      alteration: '3 Alterations Detected in Seal',
+      statusHtml: '<i data-lucide="alert-triangle" style="width:12px;height:12px;"></i> Tamper Alert (84.2% Risk)',
+      isTampered: true,
+      logs: [
+        { type: 'info', text: '> [0.08s] High-resolution optical matrix decoded' },
+        { type: 'alert', text: '> [0.18s] WARNING: Font mismatch in candidate name & roll number' },
+        { type: 'alert', text: '> [0.29s] CRITICAL: Digital watermark frequency altered (42.1% match)' },
+        { type: 'alert', text: '> [0.38s] Copy-move clone artifacts detected near official stamp!' },
+        { type: 'alert', text: '> [0.46s] RESULT: REJECTED — FLAGGED FOR SENIOR OFFICER REVIEW' }
+      ]
+    }
+  };
+
+  let activeSampleKey = 'sovereign-id';
+  let scanAnimationTimeout = null;
+
+  function runSampleScan(key) {
+    activeSampleKey = key;
+    const data = sampleData[key];
+    if (!data) return;
+
+    const laser = container.querySelector('#playground-laser');
+    const tamperBox = container.querySelector('#tamper-highlight-box');
+    const logStream = container.querySelector('#playground-terminal-logs');
+    const docId = container.querySelector('#playground-doc-id');
+    const docStamp = container.querySelector('#playground-doc-stamp');
+    const docType = container.querySelector('#playground-doc-type');
+    const docAuth = container.querySelector('#playground-doc-auth');
+    const docHash = container.querySelector('#playground-doc-hash');
+    const docWatermark = container.querySelector('#playground-doc-watermark');
+    const docAlteration = container.querySelector('#playground-doc-alteration');
+
+    // Trigger laser pulse
+    if (laser) {
+      laser.style.animation = 'none';
+      void laser.offsetWidth;
+      laser.style.animation = 'laserScan 1.6s ease-in-out infinite alternate';
+    }
+
+    // Stream logs sequentially
+    if (logStream) {
+      logStream.innerHTML = '';
+      if (scanAnimationTimeout) clearTimeout(scanAnimationTimeout);
+
+      data.logs.forEach((log, index) => {
+        setTimeout(() => {
+          const line = document.createElement('div');
+          line.className = `terminal-log-line ${log.type}`;
+          line.textContent = log.text;
+          logStream.appendChild(line);
+          logStream.scrollTop = logStream.scrollHeight;
+        }, (index + 1) * 160);
+      });
+    }
+
+    // Update document preview
+    if (docId) docId.textContent = data.id;
+    if (docType) docType.textContent = data.type;
+    if (docAuth) docAuth.textContent = data.authority;
+    if (docHash) docHash.textContent = data.hash;
+    
+    if (docWatermark) {
+      docWatermark.textContent = data.watermark;
+      docWatermark.style.color = data.isTampered ? '#f87171' : '#34d399';
+    }
+    if (docAlteration) {
+      docAlteration.textContent = data.alteration;
+      docAlteration.style.color = data.isTampered ? '#f87171' : '#34d399';
+    }
+
+    if (docStamp) {
+      docStamp.innerHTML = data.statusHtml;
+      if (data.isTampered) {
+        docStamp.style.background = 'rgba(239, 68, 68, 0.2)';
+        docStamp.style.color = '#f87171';
+        docStamp.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+      } else {
+        docStamp.style.background = 'rgba(16, 185, 129, 0.15)';
+        docStamp.style.color = '#34d399';
+        docStamp.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      }
+    }
+
+    if (tamperBox) {
+      tamperBox.style.display = data.isTampered ? 'block' : 'none';
+    }
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+  }
+
+  // Hook pill buttons
+  const samplePills = container.querySelectorAll('.sample-doc-pill');
+  samplePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      samplePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const sampleKey = pill.getAttribute('data-sample');
+      runSampleScan(sampleKey);
+    });
+  });
+
+  // Hook trigger button
+  const triggerBtn = container.querySelector('#trigger-scan-btn');
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', () => {
+      runSampleScan(activeSampleKey);
+    });
+  }
+
+  // Trigger smooth metric counter animations
+  if (window.DocuVerify && typeof window.DocuVerify.animateCounters === 'function') {
+    window.DocuVerify.animateCounters(container);
+  }
 
   if (window.lucide && typeof window.lucide.createIcons === 'function') {
     window.lucide.createIcons();

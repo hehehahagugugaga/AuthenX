@@ -71,11 +71,20 @@ export function initRouter() {
       return;
     }
 
-    // Render page
+    // Render page with living entrance transition
     const mainContent = document.getElementById('main-content');
     if (mainContent && routes[hash]) {
+      mainContent.classList.remove('page-enter-active');
+      void mainContent.offsetWidth; // trigger reflow
       mainContent.innerHTML = '';
       routes[hash](mainContent);
+      mainContent.classList.add('page-enter-active');
+
+      // Trigger dynamic counter animations if any exist in the view
+      if (window.DocuVerify && typeof window.DocuVerify.animateCounters === 'function') {
+        window.DocuVerify.animateCounters(mainContent);
+      }
+
       // Synchronize indicator
       if (window.DocuVerify && typeof window.DocuVerify.updateNavIndicator === 'function') {
         requestAnimationFrame(window.DocuVerify.updateNavIndicator);

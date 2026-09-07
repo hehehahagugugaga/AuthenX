@@ -51,8 +51,14 @@
       }
       const mainContent = document.getElementById("main-content");
       if (mainContent && routes[hash]) {
+        mainContent.classList.remove("page-enter-active");
+        void mainContent.offsetWidth;
         mainContent.innerHTML = "";
         routes[hash](mainContent);
+        mainContent.classList.add("page-enter-active");
+        if (window.DocuVerify && typeof window.DocuVerify.animateCounters === "function") {
+          window.DocuVerify.animateCounters(mainContent);
+        }
         if (window.DocuVerify && typeof window.DocuVerify.updateNavIndicator === "function") {
           requestAnimationFrame(window.DocuVerify.updateNavIndicator);
         }
@@ -617,6 +623,169 @@
     }
   }
 
+  // js/components/telemetryBar.js
+  function renderTelemetryBar() {
+    const container = document.getElementById("live-telemetry-container");
+    if (!container) return;
+    container.innerHTML = `
+    <div class="live-telemetry-bar" role="region" aria-label="Real-time Network Telemetry">
+      <div class="telemetry-left">
+        <span class="telemetry-live-badge">
+          <span class="pulse-ring"></span>
+          NETWORK LIVE
+        </span>
+        <span class="text-xs text-tertiary" style="font-size:11px;font-weight:600;display:none;@media(min-width:768px){display:inline;}">
+          SIH-188 CONSENSUS
+        </span>
+      </div>
+
+      <div class="telemetry-stream-wrapper" id="telemetry-stream-wrapper">
+        <div class="telemetry-stream-item" id="telemetry-current-stream">
+          <span class="stream-tag">[Sovereign ID]</span>
+          <span>#IN-9821 verified in New Delhi (0.01% risk)</span>
+          <span class="stream-time">\u2022 Just now</span>
+        </div>
+      </div>
+
+      <div class="telemetry-metrics">
+        <div class="telemetry-metric-item" title="Consensual Validator Nodes">
+          <i data-lucide="server" style="width:13px;height:13px;color:var(--color-accent-500);"></i>
+          <span>Nodes: <strong>48/48</strong></span>
+        </div>
+        <div class="telemetry-metric-item" title="Global Verification Ping">
+          <i data-lucide="zap" style="width:13px;height:13px;color:#f59e0b;"></i>
+          <span>Ping: <strong id="telemetry-live-ping">12ms</strong></span>
+        </div>
+        <div class="telemetry-metric-item" title="Immutable Blockchain Height">
+          <i data-lucide="blocks" style="width:13px;height:13px;color:#10b981;"></i>
+          <span>Block: <strong id="telemetry-live-block">#4,819,302</strong></span>
+        </div>
+      </div>
+    </div>
+  `;
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+    startLivingTelemetry();
+  }
+  var telemetryInterval = null;
+  var blockInterval = null;
+  var pingInterval = null;
+  function startLivingTelemetry() {
+    if (telemetryInterval) clearInterval(telemetryInterval);
+    if (blockInterval) clearInterval(blockInterval);
+    if (pingInterval) clearInterval(pingInterval);
+    const streams = [
+      { tag: "[Sovereign ID]", desc: "#IN-9821 verified in New Delhi (0.01% risk)", time: "2s ago" },
+      { tag: "[Degree Attestation]", desc: "#DEG-401 authenticated for Mumbai University", time: "5s ago" },
+      { tag: "[Land Title Deed]", desc: "#MH-7729 anchored to Merkle Tree Block #4819302", time: "9s ago" },
+      { tag: "[Passport MRZ]", desc: "#Z99182 Optical & NFC check PASSED at Border Terminal", time: "13s ago" },
+      { tag: "[Tax Clearance]", desc: "#TAX-2026-891 statutory compliance confirmed", time: "17s ago" },
+      { tag: "[Consular Seal]", desc: "#VISA-882 tamper scan: 0 alterations detected", time: "22s ago" }
+    ];
+    let streamIdx = 0;
+    const streamEl = document.getElementById("telemetry-current-stream");
+    telemetryInterval = setInterval(() => {
+      if (!streamEl) return;
+      streamIdx = (streamIdx + 1) % streams.length;
+      const current = streams[streamIdx];
+      streamEl.style.animation = "none";
+      void streamEl.offsetWidth;
+      streamEl.innerHTML = `
+      <span class="stream-tag">${current.tag}</span>
+      <span>${current.desc}</span>
+      <span class="stream-time">\u2022 ${current.time}</span>
+    `;
+      streamEl.style.animation = "telemetrySlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards";
+    }, 4200);
+    let currentBlock = 4819302;
+    const blockEl = document.getElementById("telemetry-live-block");
+    blockInterval = setInterval(() => {
+      if (!blockEl) return;
+      currentBlock += 1;
+      blockEl.textContent = `#${currentBlock.toLocaleString()}`;
+      blockEl.classList.remove("telemetry-block-flash");
+      void blockEl.offsetWidth;
+      blockEl.classList.add("telemetry-block-flash");
+    }, 14e3);
+    const pingEl = document.getElementById("telemetry-live-ping");
+    pingInterval = setInterval(() => {
+      if (!pingEl) return;
+      const jitter = Math.floor(Math.random() * 4) + 11;
+      pingEl.textContent = `${jitter}ms`;
+    }, 3800);
+  }
+
+  // js/components/motion.js
+  function initMotion() {
+    initCardSpotlights();
+    initDocumentClickRipples();
+  }
+  function initCardSpotlights() {
+    document.addEventListener("mousemove", (e) => {
+      const target = e.target.closest(
+        ".card, .kpi-card, .home-showcase-card, .home-pillar-card, .home-fact-card, .faq-card, .phone-mockup, .interactive-spotlight"
+      );
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      target.style.setProperty("--mouse-x", `${x}px`);
+      target.style.setProperty("--mouse-y", `${y}px`);
+      target.classList.add("interactive-spotlight");
+    }, { passive: true });
+  }
+  function animateCounters(root = document) {
+    const elements = root.querySelectorAll(".counter-num, .home-fact-val, [data-counter]");
+    elements.forEach((el) => {
+      if (el.dataset.animated === "true") return;
+      const originalText = el.textContent.trim();
+      const match = originalText.match(/([\d,.]+)/);
+      if (!match) return;
+      const rawNumStr = match[1].replace(/,/g, "");
+      const targetVal = parseFloat(rawNumStr);
+      if (isNaN(targetVal)) return;
+      const hasPercent = originalText.includes("%");
+      const hasPlus = originalText.includes("+");
+      const hasM = originalText.includes("M");
+      const hasLess = originalText.includes("<");
+      const hasMs = originalText.includes("ms");
+      const isFloat = rawNumStr.includes(".");
+      el.dataset.animated = "true";
+      const duration = 1200;
+      const startTime = performance.now();
+      function update(time) {
+        const elapsed = time - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = targetVal * ease;
+        let formatted = isFloat ? current.toFixed(1) : Math.floor(current).toLocaleString();
+        if (hasLess) formatted = "< " + formatted;
+        if (hasM) formatted = formatted + "M";
+        if (hasPlus) formatted = formatted + "+";
+        if (hasPercent) formatted = formatted + "%";
+        if (hasMs) formatted = formatted + "ms";
+        el.textContent = formatted;
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = originalText;
+        }
+      }
+      requestAnimationFrame(update);
+    });
+  }
+  function initDocumentClickRipples() {
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".btn, .home-tab-btn, .sample-doc-pill, .doc-filter-pill");
+      if (!btn) return;
+      btn.style.transform = "scale(0.96)";
+      setTimeout(() => {
+        btn.style.transform = "";
+      }, 120);
+    });
+  }
+
   // js/pages/home.js
   function renderHomePage(container) {
     container.innerHTML = `
@@ -786,53 +955,98 @@
             </div>
             <div class="home-showcase-terminal-title">
               <i data-lucide="terminal" style="width:13px;height:13px;"></i>
-              <span>AuthenX Core Engine \u2014 Real-time Forensic Stream</span>
+              <span>AuthenX Core Engine \u2014 Interactive Live Forensic Terminal</span>
             </div>
-            <span class="badge badge-success" style="font-size:10px;">ENGINE ACTIVE</span>
+            <span class="badge badge-success" style="font-size:10px;"><span class="live-pulse-dot" style="width:6px;height:6px;margin-right:4px;"></span>ENGINE ACTIVE</span>
           </div>
 
           <div class="home-showcase-body">
-            <!-- Simulated Document Scanner -->
+            <!-- Simulated Document Scanner & Interactive Playground -->
             <div class="home-scanner-preview">
-              <div class="home-scanner-laser"></div>
-              
-              <div class="home-doc-mock">
-                <div class="home-doc-mock-header">
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <i data-lucide="file-badge-2" style="color:var(--color-accent-400);width:20px;height:20px;"></i>
-                    <span style="font-weight:700;font-size:13px;">IN-GOV-2026-CERT-982</span>
-                  </div>
-                  <span class="home-verified-stamp">
-                    <i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.4%)
-                  </span>
-                </div>
+              <!-- Sample Document Selector Pills -->
+              <div class="playground-sample-tabs" role="tablist" aria-label="Sample Documents">
+                <button class="sample-doc-pill active" data-sample="sovereign-id">
+                  <i data-lucide="file-check-2" style="width:12px;height:12px;"></i>
+                  <span>Sovereign ID</span>
+                </button>
+                <button class="sample-doc-pill" data-sample="degree">
+                  <i data-lucide="graduation-cap" style="width:12px;height:12px;"></i>
+                  <span>Degree Certificate</span>
+                </button>
+                <button class="sample-doc-pill" data-sample="land-deed">
+                  <i data-lucide="map-pin" style="width:12px;height:12px;"></i>
+                  <span>Land Title Deed</span>
+                </button>
+                <button class="sample-doc-pill warning" data-sample="forged">
+                  <i data-lucide="alert-triangle" style="width:12px;height:12px;"></i>
+                  <span>Forged Sample</span>
+                </button>
+              </div>
 
-                <div class="home-doc-details">
-                  <div class="home-doc-detail-row">
-                    <span>DOCUMENT TYPE:</span>
-                    <span style="color:#ffffff;">National Identity Credential</span>
+              <!-- Interactive Scanner Preview Frame -->
+              <div style="position: relative; overflow: hidden; border-radius: 12px;">
+                <div class="home-scanner-laser" id="playground-laser"></div>
+                <div id="tamper-highlight-box" class="doc-tamper-box" style="display:none; top: 120px; right: 20px; width: 140px; height: 50px;"></div>
+                
+                <div class="home-doc-mock" id="playground-doc-mock">
+                  <div class="home-doc-mock-header">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <i data-lucide="file-badge-2" id="playground-doc-icon" style="color:var(--color-accent-400);width:20px;height:20px;"></i>
+                      <span style="font-weight:700;font-size:13px;" id="playground-doc-id">IN-GOV-2026-CERT-982</span>
+                    </div>
+                    <span class="home-verified-stamp" id="playground-doc-stamp">
+                      <i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.8%)
+                    </span>
                   </div>
-                  <div class="home-doc-detail-row">
-                    <span>ISSUING AUTHORITY:</span>
-                    <span style="color:#ffffff;">Ministry of Institutional Governance</span>
+
+                  <div class="home-doc-details">
+                    <div class="home-doc-detail-row">
+                      <span>DOCUMENT TYPE:</span>
+                      <span style="color:#ffffff;" id="playground-doc-type">National Identity Credential</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>ISSUING AUTHORITY:</span>
+                      <span style="color:#ffffff;" id="playground-doc-auth">Ministry of Institutional Governance</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>CRYPTOGRAPHIC HASH:</span>
+                      <span style="color:var(--color-cyan-400);font-family:monospace;" id="playground-doc-hash">e3b0c44298fc1c149afbf4c8...</span>
+                    </div>
+                    <div class="home-doc-detail-row">
+                      <span>WATERMARK INTEGRITY:</span>
+                      <span style="color:#34d399;" id="playground-doc-watermark">PASSED (99.8% Match)</span>
+                    </div>
+                    <div class="home-doc-detail-row" style="border-bottom:none;">
+                      <span>LAYER SCAN RESULT:</span>
+                      <span style="color:#34d399;" id="playground-doc-alteration">0 Alterations Detected</span>
+                    </div>
                   </div>
-                  <div class="home-doc-detail-row">
-                    <span>CRYPTOGRAPHIC HASH:</span>
-                    <span style="color:var(--color-cyan-400);">e3b0c44298fc1c149afbf4c8...</span>
-                  </div>
-                  <div class="home-doc-detail-row">
-                    <span>WATERMARK INTEGRITY:</span>
-                    <span style="color:#34d399;">PASSED (99.8% Match)</span>
-                  </div>
-                  <div class="home-doc-detail-row" style="border-bottom:none;">
-                    <span>LAYER MODIFICATION SCAN:</span>
-                    <span style="color:#34d399;">0 Alterations Detected</span>
-                  </div>
+                </div>
+              </div>
+
+              <!-- Live Streaming Forensic Terminal Log -->
+              <div style="margin-top: 12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <span style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.04em;text-transform:uppercase;">
+                    <i data-lucide="terminal" style="width:11px;height:11px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
+                    Real-Time Forensic Log Stream
+                  </span>
+                  <button class="playground-trigger-btn btn-shimmer" id="trigger-scan-btn">
+                    <i data-lucide="refresh-cw" style="width:12px;height:12px;"></i>
+                    <span>Run Deep Neural Audit</span>
+                  </button>
+                </div>
+                <div class="terminal-log-stream" id="playground-terminal-logs">
+                  <div class="terminal-log-line info">> [0.08s] High-resolution optical matrix decoded (1200 DPI)</div>
+                  <div class="terminal-log-line info">> [0.19s] Neural kerning & font geometry audit completed</div>
+                  <div class="terminal-log-line success">> [0.28s] Spectral watermark density: 99.8% verified</div>
+                  <div class="terminal-log-line success">> [0.37s] Inscribing consensus digest to Block #4,819,302</div>
+                  <div class="terminal-log-line success">> [0.44s] RESULT: IMMUTABLE PASS (Zero alterations detected)</div>
                 </div>
               </div>
             </div>
 
-            <!-- Value Prop Bullets -->
+            <!-- Value Prop Bullets with interactive pulse -->
             <div class="home-showcase-features">
               <div class="home-showcase-feature-item">
                 <div class="home-feature-check-icon">
@@ -1177,6 +1391,159 @@
         }
       });
     });
+    const sampleData = {
+      "sovereign-id": {
+        id: "IN-GOV-2026-CERT-982",
+        type: "National Identity Credential",
+        authority: "Ministry of Institutional Governance",
+        hash: "e3b0c44298fc1c149afbf4c8...",
+        watermark: "PASSED (99.8% Match)",
+        alteration: "0 Alterations Detected",
+        statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.8%)',
+        isTampered: false,
+        logs: [
+          { type: "info", text: "> [0.08s] High-resolution optical matrix decoded (1200 DPI)" },
+          { type: "info", text: "> [0.19s] Neural kerning & font geometry audit completed" },
+          { type: "success", text: "> [0.28s] Spectral watermark density: 99.8% verified" },
+          { type: "success", text: "> [0.37s] Inscribing consensus digest to Block #4,819,302" },
+          { type: "success", text: "> [0.44s] RESULT: IMMUTABLE PASS (Zero alterations detected)" }
+        ]
+      },
+      "degree": {
+        id: "MUM-UNI-2025-BTECH-401",
+        type: "Bachelor of Technology (Honours)",
+        authority: "University of Mumbai Examination Board",
+        hash: "8f43a9120bc71e88410293da...",
+        watermark: "PASSED (99.4% Match)",
+        alteration: "0 Alterations Detected",
+        statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.4%)',
+        isTampered: false,
+        logs: [
+          { type: "info", text: "> [0.07s] University seal optical vector extracted" },
+          { type: "info", text: "> [0.16s] Registrar digital signature cryptographic check: VALID" },
+          { type: "success", text: "> [0.26s] Academic ledger cross-referenced against National Archive" },
+          { type: "success", text: "> [0.35s] Merkle tree leaf confirmed in Sovereign Ledger" },
+          { type: "success", text: "> [0.41s] RESULT: ATTESTED GENUINE (100% Academic Trust)" }
+        ]
+      },
+      "land-deed": {
+        id: "REV-MH-PUNE-2026-7729",
+        type: "Statutory Land Ownership Title",
+        authority: "State Revenue & Registration Dept",
+        hash: "77c29ba0482b9914ea661001...",
+        watermark: "PASSED (99.9% Match)",
+        alteration: "0 Alterations Detected",
+        statusHtml: '<i data-lucide="shield-check" style="width:12px;height:12px;"></i> Genuine (99.9%)',
+        isTampered: false,
+        logs: [
+          { type: "info", text: "> [0.09s] Geospatial coordinates verified: 18.5204\xB0 N, 73.8567\xB0 E" },
+          { type: "info", text: "> [0.21s] Stamp paper security fibers spectral reflectance verified" },
+          { type: "success", text: "> [0.31s] Chain of title unbroken across 4 previous transactions" },
+          { type: "success", text: "> [0.39s] Dual officer multi-sig validation passed" },
+          { type: "success", text: "> [0.45s] RESULT: DEED ANCHORED (Statutory Legal Certainty)" }
+        ]
+      },
+      "forged": {
+        id: "FORGED-SAMPLE-X992",
+        type: "Counterfeit Academic Diploma",
+        authority: "Unauthorized Issuer (Fabricated)",
+        hash: "000000000000000000000000...",
+        watermark: "FAILED (42.1% Low Match)",
+        alteration: "3 Alterations Detected in Seal",
+        statusHtml: '<i data-lucide="alert-triangle" style="width:12px;height:12px;"></i> Tamper Alert (84.2% Risk)',
+        isTampered: true,
+        logs: [
+          { type: "info", text: "> [0.08s] High-resolution optical matrix decoded" },
+          { type: "alert", text: "> [0.18s] WARNING: Font mismatch in candidate name & roll number" },
+          { type: "alert", text: "> [0.29s] CRITICAL: Digital watermark frequency altered (42.1% match)" },
+          { type: "alert", text: "> [0.38s] Copy-move clone artifacts detected near official stamp!" },
+          { type: "alert", text: "> [0.46s] RESULT: REJECTED \u2014 FLAGGED FOR SENIOR OFFICER REVIEW" }
+        ]
+      }
+    };
+    let activeSampleKey = "sovereign-id";
+    let scanAnimationTimeout = null;
+    function runSampleScan(key) {
+      activeSampleKey = key;
+      const data = sampleData[key];
+      if (!data) return;
+      const laser = container.querySelector("#playground-laser");
+      const tamperBox = container.querySelector("#tamper-highlight-box");
+      const logStream = container.querySelector("#playground-terminal-logs");
+      const docId = container.querySelector("#playground-doc-id");
+      const docStamp = container.querySelector("#playground-doc-stamp");
+      const docType = container.querySelector("#playground-doc-type");
+      const docAuth = container.querySelector("#playground-doc-auth");
+      const docHash = container.querySelector("#playground-doc-hash");
+      const docWatermark = container.querySelector("#playground-doc-watermark");
+      const docAlteration = container.querySelector("#playground-doc-alteration");
+      if (laser) {
+        laser.style.animation = "none";
+        void laser.offsetWidth;
+        laser.style.animation = "laserScan 1.6s ease-in-out infinite alternate";
+      }
+      if (logStream) {
+        logStream.innerHTML = "";
+        if (scanAnimationTimeout) clearTimeout(scanAnimationTimeout);
+        data.logs.forEach((log, index) => {
+          setTimeout(() => {
+            const line = document.createElement("div");
+            line.className = `terminal-log-line ${log.type}`;
+            line.textContent = log.text;
+            logStream.appendChild(line);
+            logStream.scrollTop = logStream.scrollHeight;
+          }, (index + 1) * 160);
+        });
+      }
+      if (docId) docId.textContent = data.id;
+      if (docType) docType.textContent = data.type;
+      if (docAuth) docAuth.textContent = data.authority;
+      if (docHash) docHash.textContent = data.hash;
+      if (docWatermark) {
+        docWatermark.textContent = data.watermark;
+        docWatermark.style.color = data.isTampered ? "#f87171" : "#34d399";
+      }
+      if (docAlteration) {
+        docAlteration.textContent = data.alteration;
+        docAlteration.style.color = data.isTampered ? "#f87171" : "#34d399";
+      }
+      if (docStamp) {
+        docStamp.innerHTML = data.statusHtml;
+        if (data.isTampered) {
+          docStamp.style.background = "rgba(239, 68, 68, 0.2)";
+          docStamp.style.color = "#f87171";
+          docStamp.style.borderColor = "rgba(239, 68, 68, 0.5)";
+        } else {
+          docStamp.style.background = "rgba(16, 185, 129, 0.15)";
+          docStamp.style.color = "#34d399";
+          docStamp.style.borderColor = "rgba(16, 185, 129, 0.4)";
+        }
+      }
+      if (tamperBox) {
+        tamperBox.style.display = data.isTampered ? "block" : "none";
+      }
+      if (window.lucide && typeof window.lucide.createIcons === "function") {
+        window.lucide.createIcons();
+      }
+    }
+    const samplePills = container.querySelectorAll(".sample-doc-pill");
+    samplePills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        samplePills.forEach((p) => p.classList.remove("active"));
+        pill.classList.add("active");
+        const sampleKey = pill.getAttribute("data-sample");
+        runSampleScan(sampleKey);
+      });
+    });
+    const triggerBtn = container.querySelector("#trigger-scan-btn");
+    if (triggerBtn) {
+      triggerBtn.addEventListener("click", () => {
+        runSampleScan(activeSampleKey);
+      });
+    }
+    if (window.DocuVerify && typeof window.DocuVerify.animateCounters === "function") {
+      window.DocuVerify.animateCounters(container);
+    }
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
     }
@@ -3089,7 +3456,7 @@
     }
   }
   window.DocuVerify = window.DocuVerify || {};
-  window.DocuVerify.flagForReview = function () {
+  window.DocuVerify.flagForReview = function() {
     showConfirmDialog(
       "Flag for Manual Review",
       "This document will be flagged and assigned to a senior verification officer for manual review. Proceed?",
@@ -3667,13 +4034,13 @@
         <div class="card-body">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
             ${[
-        ["System Version", "DocuVerify v2.4.1"],
-        ["API Version", "v3.2.0"],
-        ["Blockchain Node", "IVN Node v1.8"],
-        ["OCR Engine", "DocuOCR v4.1"],
-        ["Last Updated", "05 Sep 2026"],
-        ["License", "Government Enterprise"]
-      ].map(([label, value]) => `
+      ["System Version", "DocuVerify v2.4.1"],
+      ["API Version", "v3.2.0"],
+      ["Blockchain Node", "IVN Node v1.8"],
+      ["OCR Engine", "DocuOCR v4.1"],
+      ["Last Updated", "05 Sep 2026"],
+      ["License", "Government Enterprise"]
+    ].map(([label, value]) => `
               <div style="display:flex;justify-content:space-between;padding:var(--space-2);border-bottom:1px solid var(--border-light);">
                 <span class="text-sm text-secondary">${label}</span>
                 <span class="text-sm font-medium">${value}</span>
@@ -3749,31 +4116,31 @@
         <div class="card-body" style="padding: 0;">
           <div id="faq-list">
             ${[
-        {
-          q: "How does the document verification process work?",
-          a: "AuthenX utilizes a hybrid multi-layer pipeline: optical character recognition (OCR), metadata authenticity inspection, AI forgery detection, visual artifact cross-validation, and cryptographic matching against blockchain ledger records."
-        },
-        {
-          q: "What document types are supported?",
-          a: "The system accepts PDF, JPG, PNG, DOC, and DOCX formats. It automatically classifies academic degrees, government certificates, identity credentials, revenue records, and notary documents."
-        },
-        {
-          q: "How is blockchain integrity guaranteed?",
-          a: "Each verified document computes a SHA-256 cryptographic digest that is permanently inscribed on the Institutional Verification Blockchain. Any subsequent alteration creates an immediate hash divergence."
-        },
-        {
-          q: 'What does a "Suspicious" status indicate?',
-          a: "A suspicious verdict signifies that the document triggered one or more security threshold alerts (e.g. font substitution, edited metadata, or signature discrepancy). These documents are automatically flagged for manual inspector review."
-        },
-        {
-          q: "How do I flag a document for senior officer review?",
-          a: 'When viewing any verification report, click "Flag for Manual Review" in the top action bar. You can add officer notes and route the dossier to senior administrative personnel.'
-        },
-        {
-          q: "Is citizen and organizational data secure?",
-          a: "All documents are transmitted using TLS 1.3 encryption and stored with AES-256 cryptographic keys. Role-based access control (RBAC), multi-factor authentication, and tamper-evident audit trails ensure full compliance."
-        }
-      ].map((faq, i) => `
+      {
+        q: "How does the document verification process work?",
+        a: "AuthenX utilizes a hybrid multi-layer pipeline: optical character recognition (OCR), metadata authenticity inspection, AI forgery detection, visual artifact cross-validation, and cryptographic matching against blockchain ledger records."
+      },
+      {
+        q: "What document types are supported?",
+        a: "The system accepts PDF, JPG, PNG, DOC, and DOCX formats. It automatically classifies academic degrees, government certificates, identity credentials, revenue records, and notary documents."
+      },
+      {
+        q: "How is blockchain integrity guaranteed?",
+        a: "Each verified document computes a SHA-256 cryptographic digest that is permanently inscribed on the Institutional Verification Blockchain. Any subsequent alteration creates an immediate hash divergence."
+      },
+      {
+        q: 'What does a "Suspicious" status indicate?',
+        a: "A suspicious verdict signifies that the document triggered one or more security threshold alerts (e.g. font substitution, edited metadata, or signature discrepancy). These documents are automatically flagged for manual inspector review."
+      },
+      {
+        q: "How do I flag a document for senior officer review?",
+        a: 'When viewing any verification report, click "Flag for Manual Review" in the top action bar. You can add officer notes and route the dossier to senior administrative personnel.'
+      },
+      {
+        q: "Is citizen and organizational data secure?",
+        a: "All documents are transmitted using TLS 1.3 encryption and stored with AES-256 cryptographic keys. Role-based access control (RBAC), multi-factor authentication, and tamper-evident audit trails ensure full compliance."
+      }
+    ].map((faq, i) => `
               <div class="help-faq-item" data-faq="${i}">
                 <div class="help-faq-item-title">
                   <span class="faq-question">${faq.q}</span>
@@ -3887,6 +4254,7 @@
   // js/app.js
   function init() {
     window.DocuVerify = window.DocuVerify || {};
+    window.DocuVerify.animateCounters = animateCounters;
     try {
       document.documentElement.removeAttribute("data-theme");
       document.getElementById("font-dock")?.remove();
@@ -3904,6 +4272,16 @@
       renderTopbar();
     } catch (err) {
       console.error("DocuVerify: renderTopbar error:", err);
+    }
+    try {
+      renderTelemetryBar();
+    } catch (err) {
+      console.error("DocuVerify: renderTelemetryBar error:", err);
+    }
+    try {
+      initMotion();
+    } catch (err) {
+      console.error("DocuVerify: initMotion error:", err);
     }
     try {
       registerRoute("home", renderHomePage);

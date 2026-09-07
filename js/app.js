@@ -5,6 +5,8 @@
 import { initRouter, registerRoute } from './router.js';
 import { renderSidebar } from './components/sidebar.js';
 import { renderTopbar } from './components/topbar.js';
+import { renderTelemetryBar } from './components/telemetryBar.js';
+import { initMotion, animateCounters } from './components/motion.js';
 
 // Pages
 import { renderHomePage } from './pages/home.js';
@@ -20,6 +22,7 @@ import './components/modals.js';
 
 function init() {
   window.DocuVerify = window.DocuVerify || {};
+  window.DocuVerify.animateCounters = animateCounters;
 
   // Clean up any lingering theme attributes and docks
   try {
@@ -41,6 +44,19 @@ function init() {
     renderTopbar();
   } catch (err) {
     console.error('DocuVerify: renderTopbar error:', err);
+  }
+
+  try {
+    renderTelemetryBar();
+  } catch (err) {
+    console.error('DocuVerify: renderTelemetryBar error:', err);
+  }
+
+  // Initialize interactive spotlights, click ripples and physics
+  try {
+    initMotion();
+  } catch (err) {
+    console.error('DocuVerify: initMotion error:', err);
   }
 
   // Register routes & initialize router
